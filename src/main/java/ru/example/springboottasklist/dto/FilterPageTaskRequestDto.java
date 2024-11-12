@@ -1,23 +1,23 @@
 package ru.example.springboottasklist.dto;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import ru.example.springboottasklist.entity.Category;
 import ru.example.springboottasklist.enums.PriorityTitle;
 import ru.example.springboottasklist.enums.Status;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.time.LocalDateTime;
 
-import static ru.example.springboottasklist.utils.DataConstants.DATE_PATTERN;
-
 public record FilterPageTaskRequestDto(
+        Long userId,
         String taskTitle,
         PriorityTitle title,
+        @Enumerated(EnumType.STRING)
         Status status,
-        Category category,
-        @DateTimeFormat(pattern = DATE_PATTERN)
+        String categoryTitle,
+        @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
         LocalDateTime timeFrom,
-
-        @DateTimeFormat(pattern = DATE_PATTERN)
+        @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
         LocalDateTime timeTo
 ) {
 }

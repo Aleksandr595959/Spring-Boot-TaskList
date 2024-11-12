@@ -1,8 +1,10 @@
 package ru.example.springboottasklist.entity;
 
-import com.sun.istack.NotNull;
-import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import ru.example.springboottasklist.enums.Role;
 
 import javax.persistence.*;
@@ -42,11 +44,17 @@ public class User extends BaseEntity {
     @Column(name = "role", nullable = false)
     private Role role;
 
+    @CreationTimestamp
+    @Column(name = "dateOfCreated", nullable = false, updatable = false)
+    private LocalDateTime dateOfCreated;
 
-    @CreatedDate
-    @Column
-    private LocalDateTime dateOfCreated = LocalDateTime.now();
+//    @CreatedDate
+//    @Column
+//    private LocalDateTime dateOfCreated = LocalDateTime.now();
 
     @OneToMany(mappedBy = "user")
     private List<Task> tasks;
+
+    @OneToMany(mappedBy = "user")
+    private List<Category> categories;
 }

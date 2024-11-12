@@ -8,8 +8,8 @@ import javax.persistence.*;
 @Setter
 @MappedSuperclass
 @EqualsAndHashCode
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class BaseEntity {
 
     @Id

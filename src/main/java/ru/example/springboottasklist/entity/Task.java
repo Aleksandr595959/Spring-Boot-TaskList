@@ -1,12 +1,10 @@
 package ru.example.springboottasklist.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import ru.example.springboottasklist.enums.PriorityTitle;
 import ru.example.springboottasklist.enums.Status;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -16,6 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "tasks")
 public class Task extends BaseEntity {
 
@@ -26,7 +25,7 @@ public class Task extends BaseEntity {
     private Integer completed;
 
     @CreationTimestamp
-    @Column(name = "created_task")
+    @Column(name = "created_task", nullable = false, updatable = false)
     private LocalDateTime createdTask;
 
     @Column
@@ -36,6 +35,7 @@ public class Task extends BaseEntity {
     @Column
     @Enumerated(EnumType.STRING)
     private Status status;
+
 
     @ManyToOne
     @JoinColumn(name = "category_id")

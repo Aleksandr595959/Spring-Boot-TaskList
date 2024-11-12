@@ -2,11 +2,12 @@ package ru.example.springboottasklist.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.example.springboottasklist.dto.CategoriesDto;
 import ru.example.springboottasklist.dto.CategoryDto;
-import ru.example.springboottasklist.dto.CreateCategoryDto;
+import ru.example.springboottasklist.dto.CreateOrUpdateCategoryDto;
 import ru.example.springboottasklist.entity.Category;
 import ru.example.springboottasklist.entity.Task;
 import ru.example.springboottasklist.entity.User;
@@ -16,11 +17,13 @@ import ru.example.springboottasklist.repository.CategoryRepository;
 import ru.example.springboottasklist.service.CategoryService;
 import ru.example.springboottasklist.utils.AuthUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
+/**
+ * Сервис категорий.
+ * Осуществляет операции добавления, обновления, удаления и получения категорий.
+ */
 @Slf4j
 @Service
 @Transactional
@@ -30,35 +33,51 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final AuthUtils authUtils;
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @Override
-    public CategoryDto addCategory(CreateCategoryDto categoryDto) {
-        Category category = categoryMapper.toEntity(categoryDto);
+    public CategoryDto addCategory(CreateOrUpdateCategoryDto categoryDto) {
+        log.info("Was invoked method for : addCategory");
+        User user = authUtils.getUserFromAuthentication();
+        Category category = categoryMapper.createCategoryDtoToCategory(categoryDto, user);
         categoryRepository.save(category);
         return categoryMapper.toDto(category);
     }
 
-
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @Override
-    public CategoryDto updateCategory(CreateCategoryDto categoryDto, Long id) {
-        Category category = categoryRepository.findById(id).orElseThrow(CategoryNotFoundException::new);
+    public CategoryDto updateCategory(CreateOrUpdateCategoryDto categoryDto, Long id) {
+        log.info("Was invoked method for : updateCategory");
+
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException("Отсутствует категория по данному id" + id));
         Category updatedCategory = categoryMapper.updateCategoryDtoToCategory(category, categoryDto);
-        categoryRepository.save(updatedCategory);
+        categoryRepository.save(updatedCategory); //можно попробовать без этого
         return categoryMapper.toCategoryDto(updatedCategory);
     }
 
+    /**
+     * Удаляет категорию по её идентификатору.
+     *
+     * @param id идентификатор категории
+     */
+    @PreAuthorize("hasRole('ADMIN') or authentication.name == @categoryRepository.getById(#id).getUser().login")
     @Override
     public void removeCategory(Long id) {
-    Category category = categoryRepository.findById(id).orElseThrow(CategoryNotFoundException::new);
-    categoryRepository.delete(category);
+        log.info("Was invoked method for : removeCategory");
+
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException("Отсутствует категория по данному id" + id));
+        categoryRepository.delete(category);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @Override
     public CategoriesDto getAllCategories() {
+        log.info("Was invoked method for : getAllCategories");
+
         User user = authUtils.getUserFromAuthentication();
         List<CategoryDto> categoriesList = user.getTasks().stream()
                 .map(Task::getCategory)
                 .filter(Objects::nonNull)
-                .distinct()
+//                .distinct()
                 .map(categoryMapper::toCategoryDto)
                 .toList();
         return new CategoriesDto(categoriesList);
@@ -66,6 +85,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category getCategoryById(final Long id) {
-        return categoryRepository.findById(id).orElseThrow(CategoryNotFoundException::new);
+        log.info("Was invoked method for : getCategoryById");
+        
+        return categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException("Отсутствует категория по данному id: " + id));
     }
 }

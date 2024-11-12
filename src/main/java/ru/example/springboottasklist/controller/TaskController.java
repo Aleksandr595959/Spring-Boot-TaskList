@@ -6,18 +6,19 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.example.springboottasklist.dto.FilterPageTaskRequestDto;
-import ru.example.springboottasklist.dto.FilterPageTaskResponseDto;
-import ru.example.springboottasklist.dto.TaskDto;
-import ru.example.springboottasklist.dto.TasksDto;
+import ru.example.springboottasklist.dto.*;
 import ru.example.springboottasklist.service.TaskService;
 
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * Контроллер для работы с задачами.
+ */
 @Slf4j
 @RequestMapping("/task")
 @CrossOrigin(value = "http://localhost:3000")
@@ -28,22 +29,39 @@ import java.util.List;
 public class TaskController {
     private final TaskService taskService;
 
-    @PostMapping("/creteTask")
+    /**
+     * Добавление задачи.
+     *
+     * @param createOrUpdateTaskDto объект с данными для создания или обновления задачи
+     * @return {@link ResponseEntity} с объектом {@link TaskDto}
+     */
+    @PostMapping("/createTask")
     @Operation(summary = "Создание задачи")
     @ApiResponse(responseCode = "201", description = "Created")
     @ApiResponse(responseCode = "401", description = "Unauthorized")
-    public ResponseEntity<TaskDto> createTask(@Valid @RequestBody TaskDto taskDto) {
-        return ResponseEntity.ok(taskService.addTask(taskDto));
+    public ResponseEntity<TaskDto> createTask(@Valid @RequestBody CreateOrUpdateTaskDto createOrUpdateTaskDto) {
+        return ResponseEntity.ok(taskService.addTask(createOrUpdateTaskDto));
     }
 
+    /**
+     * Получение всех задач пользователя.
+     *
+     * @return {@link ResponseEntity} с объектом {@link TasksDto}
+     */
     @GetMapping("/getAllTaskUser")
     @Operation(summary = "Получение всех задач пользователя")
     @ApiResponse(responseCode = "200", description = "OK")
     public ResponseEntity<TasksDto> getAllTaskUser() {
-        TasksDto tasksDto = taskService.getTaskAllUser();
+        TasksDto tasksDto = taskService.getAllTasksByUser();
         return ResponseEntity.ok(tasksDto);
     }
 
+    /**
+     * Удаление задачи.
+     *
+     * @param id идентификатор задачи
+     * @return {@link ResponseEntity} без тела (No Content)
+     */
     @DeleteMapping("{id}")
     @Operation(summary = "Удаление задачи",
             description = "Удаление задачи по идентификационному номеру авторизованным пользователем")
@@ -56,6 +74,13 @@ public class TaskController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Обновление задачи.
+     *
+     * @param id                    идентификатор задачи
+     * @param createOrUpdateTaskDto объект с данными для создания или обновления задачи
+     * @return {@link ResponseEntity} с объектом {@link TaskDto}
+     */
     @PatchMapping("/{id}")
     @Operation(summary = "Обновление задачи",
             description = "Обновление задачи по id задачи")
@@ -63,14 +88,30 @@ public class TaskController {
     @ApiResponse(responseCode = "401", description = "Unauthorized")
     @ApiResponse(responseCode = "403", description = "Forbidden")
     public ResponseEntity<TaskDto> updateTask(@PathVariable("id") Long id,
-                                              @Valid @RequestBody TaskDto taskDto) {
-        return ResponseEntity.ok(taskService.updateTask(id, taskDto));
+                                              @Valid @RequestBody CreateOrUpdateTaskDto createOrUpdateTaskDto) {
+        return ResponseEntity.ok(taskService.updateTask(id, createOrUpdateTaskDto));
     }
 
+    /**
+     * Фильтрация и пагинация задач.
+     *
+     * @param pageNumber               с какого элемента
+     * @param pageSize                 по какой элемент
+     * @param filterPageTaskRequestDto объект с данными для фильтрации
+     * @return {@link ResponseEntity} с объектом {@link FilterPageTaskResponseDto}
+     */
+    @Operation(summary = "Фильтрация задач",
+            description = "Фильтрация и пагинация задач пользователя")
+    @ApiResponse(responseCode = "204", description = "No Content")
+    @ApiResponse(responseCode = "401", description = "Unauthorized")
+    @ApiResponse(responseCode = "403", description = "Forbidden")
+    @ApiResponse(responseCode = "404", description = "Not Found")
     @GetMapping("getTaskUser")
     public ResponseEntity<List<FilterPageTaskResponseDto>> getTaskUser(@RequestParam("page") Integer pageNumber,
                                                                        @RequestParam("size") Integer pageSize,
-                                                                       @Valid @ModelAttribute FilterPageTaskRequestDto dto, Sort sort) {
-        return ResponseEntity.ok(taskService.getTasksUser(dto, sort, pageNumber, pageSize));
+                                                                       @Valid @ModelAttribute FilterPageTaskRequestDto filterPageTaskRequestDto,
+                                                                       @SortDefault(sort = "id") Sort sort) {
+        return ResponseEntity.ok(taskService.getTasksUser(filterPageTaskRequestDto, sort, pageNumber, pageSize));
     }
+
 }

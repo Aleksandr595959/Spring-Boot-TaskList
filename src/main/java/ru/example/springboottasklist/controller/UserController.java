@@ -14,6 +14,9 @@ import ru.example.springboottasklist.service.UserService;
 
 import javax.validation.Valid;
 
+/**
+ * Контроллер отвечающий за обработку HTTP-запросов, связанных с пользователями.
+ */
 @RestController
 @RequestMapping("/users")
 @CrossOrigin(value = "http://localhost:3000")
@@ -24,6 +27,12 @@ public class UserController {
 
     private final UserService userService;
 
+    /**
+     * Обновляет пароль авторизованного пользователя.
+     *
+     * @param newPasswordDto DTO-объект с текущим и новым паролем.
+     * @return Ответ со статусом HTTP 204 (No Content).
+     */
     @Operation(summary = "Обновление пароля")
     @ApiResponse(responseCode = "200", description = "OK")
     @ApiResponse(responseCode = "401", description = "Unauthorized")
@@ -34,6 +43,11 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Получает информацию об авторизованном пользователе.
+     *
+     * @return Ответ со статусом HTTP 200 и DTO-объектом пользователя в теле ответа.
+     */
     @Operation(summary = "Получение информации об авторизованном пользователе")
     @ApiResponse(responseCode = "200", description = "OK")
     @ApiResponse(responseCode = "401", description = "Unauthorized")
@@ -42,6 +56,12 @@ public class UserController {
         return ResponseEntity.ok(userService.getAuthorizedUser());
     }
 
+    /**
+     * Обновляет информацию об авторизованном пользователе.
+     *
+     * @param updateUser DTO с обновленными данными пользователя.
+     * @return Ответ со статусом HTTP 200 OK и обновленной информацией об авторизованном пользователе в теле ответа.
+     */
     @PatchMapping("/me")
     @Operation(summary = "Обновление информации об авторизованном пользователе")
     @ApiResponse(responseCode = "200", description = "OK")

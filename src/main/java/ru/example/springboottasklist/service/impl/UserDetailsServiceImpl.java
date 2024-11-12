@@ -27,6 +27,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         final var user = userRepository.findByLogin(username).orElseThrow(() ->
                 new UsernameNotFoundException("Пользователь не найден: " + username));
-        return new User(user.getLogin(),user.getPassword(), Collections.singleton(new SimpleGrantedAuthority(user.getRole().name())));
+        return new User(user.getLogin(), user.getPassword(), Collections.singleton(new SimpleGrantedAuthority(user.getRole().name())));
     }
 }

@@ -21,6 +21,7 @@ public abstract class UserMapper {
 
     public abstract User toEntity(User user);
 
+    @Mapping(target = "username", source = "login")
     public abstract UserDto toDto(User user);
 
     public abstract UpdateUserDto updateUserDtoFromUser(User user);

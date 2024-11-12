@@ -16,37 +16,47 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TaskSpecification implements Specification<Task> {
     private final FilterPageTaskRequestDto filterPageTaskRequestDto;
-
+    private final Long userId;
     @Override
     public Predicate toPredicate(@NonNull Root<Task> root,
                                  @NonNull CriteriaQuery<?> query,
                                  @NonNull CriteriaBuilder criteriaBuilder) {
         List<Predicate> predicates = new ArrayList<>();
 
+
         if (filterPageTaskRequestDto.taskTitle() != null) {
             predicates.add(criteriaBuilder.equal(criteriaBuilder.upper(root.get("taskTitle")),
                     filterPageTaskRequestDto.taskTitle().toUpperCase()));
         }
-        if (filterPageTaskRequestDto.category() != null) {
-            predicates.add(criteriaBuilder.equal(criteriaBuilder.upper(root.get("category")),
-                    filterPageTaskRequestDto.category()));
+        if (filterPageTaskRequestDto.categoryTitle() != null) {
+            predicates.add(criteriaBuilder.equal(criteriaBuilder.upper(root.get("category").get("categoryTitle")),
+                    filterPageTaskRequestDto.categoryTitle().toUpperCase()));
         }
         if (filterPageTaskRequestDto.status() != null) {
-            predicates.add(criteriaBuilder.equal(criteriaBuilder.upper(root.get("status")),
-                    filterPageTaskRequestDto.status().name()));
+            predicates.add(criteriaBuilder.equal(root.get("status"), filterPageTaskRequestDto.status()));
         }
         if (filterPageTaskRequestDto.title() != null) {
-            predicates.add(criteriaBuilder.equal(criteriaBuilder.upper(root.get("title")),
-                    filterPageTaskRequestDto.title().name()));
+            predicates.add(criteriaBuilder.equal(root.get("title"), filterPageTaskRequestDto.title()));
+
         }
         if (filterPageTaskRequestDto.timeFrom() != null) {
-            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("time"),
+            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("createdTask"),
                     filterPageTaskRequestDto.timeFrom()));
         }
         if (filterPageTaskRequestDto.timeTo() != null) {
-            predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("time"),
+            predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("createdTask"),
                     filterPageTaskRequestDto.timeTo()));
         }
+        // Фильтрация по пользователю
+//        if (filterPageTaskRequestDto.userId() != null) {
+//            predicates.add(criteriaBuilder.equal(root.get("user").get("id"), filterPageTaskRequestDto.userId()));
+//        }
+        // Фильтрация по userId, если он не null (не администратор)
+        if (userId != null) {
+            predicates.add(criteriaBuilder.equal(root.get("user").get("id"), userId));
+        }
+
+
         return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
 }

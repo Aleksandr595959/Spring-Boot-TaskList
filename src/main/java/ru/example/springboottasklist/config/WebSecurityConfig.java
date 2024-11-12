@@ -39,7 +39,8 @@ public class WebSecurityConfig extends GlobalMethodSecurityConfiguration {
             "/v3/api-docs",
             "/webjars/**",
             "/login",
-            "/register"
+            "/register",
+            "/**"
     };
 
     /**
@@ -50,6 +51,26 @@ public class WebSecurityConfig extends GlobalMethodSecurityConfiguration {
      * @return фильтр цепочки безопасности
      * @throws Exception если возникнет ошибка при настройке безопасности
      */
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        log.info("Was invoked method for : filterChain");
+//
+//        http.csrf()
+//                .disable()
+//                .authorizeHttpRequests(
+//                        authorization ->
+//                                authorization
+//                                        .mvcMatchers(AUTH_WHITELIST)
+//                                        .permitAll()
+//                                        .mvcMatchers(HttpMethod.GET, "**")
+//                                        .permitAll()
+//                                        .mvcMatchers("**", "**")
+//                                        .authenticated())
+//                .cors()
+//                .and()
+//                .httpBasic(withDefaults());
+//        return http.build();
+//    }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         log.info("Was invoked method for : filterChain");
@@ -59,12 +80,10 @@ public class WebSecurityConfig extends GlobalMethodSecurityConfiguration {
                 .authorizeHttpRequests(
                         authorization ->
                                 authorization
-                                        .mvcMatchers(AUTH_WHITELIST)
+                                        // Разрешить доступ ко всем URL для всех пользователей (даже неавторизованных)
+                                        .mvcMatchers("/**")
                                         .permitAll()
-                                        .mvcMatchers(HttpMethod.GET, "/Spring-Boot-TaskList")
-                                        .permitAll()
-                                        .mvcMatchers("/Spring-Boot-TaskList/**", "/users/**")
-                                        .authenticated())
+                )
                 .cors()
                 .and()
                 .httpBasic(withDefaults());

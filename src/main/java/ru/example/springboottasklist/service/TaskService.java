@@ -1,17 +1,14 @@
 package ru.example.springboottasklist.service;
 
 import org.springframework.data.domain.Sort;
-import ru.example.springboottasklist.dto.FilterPageTaskRequestDto;
-import ru.example.springboottasklist.dto.FilterPageTaskResponseDto;
-import ru.example.springboottasklist.dto.TaskDto;
-import ru.example.springboottasklist.dto.TasksDto;
+import ru.example.springboottasklist.dto.*;
 
 import java.util.List;
 
 public interface TaskService {
-    TaskDto addTask(TaskDto taskDto);
-    TasksDto getTaskAllUser();
+    TaskDto addTask(CreateOrUpdateTaskDto taskDto);
+    TasksDto getAllTasksByUser();
     void removeTask(Long id);
-    TaskDto updateTask(Long id,TaskDto taskDto);
+    TaskDto updateTask(Long id,CreateOrUpdateTaskDto taskDto);
     List<FilterPageTaskResponseDto> getTasksUser(FilterPageTaskRequestDto filterPageTaskRequestDto, Sort sort, Integer page, Integer size);
 }
