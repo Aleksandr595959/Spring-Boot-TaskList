@@ -8,8 +8,15 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import java.time.LocalDateTime;
 
+/**
+ * @param taskTitle     Название задачи
+ * @param title         Приоритет задачи
+ * @param status        Статус выполнения задачи
+ * @param categoryTitle Название категории задачи
+ * @param timeFrom      Начальное время поиска
+ * @param timeTo        Конечное время поиска
+ */
 public record FilterPageTaskRequestDto(
-        Long userId,
         String taskTitle,
         PriorityTitle title,
         @Enumerated(EnumType.STRING)

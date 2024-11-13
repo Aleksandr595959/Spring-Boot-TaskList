@@ -4,6 +4,10 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+/**
+ * @param username Логин
+ * @param password Пароль
+ */
 public record LoginDto(
         @NotBlank(message = "Поле логин не может быть пустым")
         @Size(min = 4, max = 32, message = "Логин должен содержать от 4 до 32 символов")

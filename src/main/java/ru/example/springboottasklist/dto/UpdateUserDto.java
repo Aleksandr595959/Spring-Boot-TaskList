@@ -4,6 +4,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+/**
+ * @param firstName Имя пользователя
+ * @param lastName  Фамилия пользователя
+ * @param phone     Номер контактного телефона
+ */
 public record UpdateUserDto(
         @NotBlank(message = "Имя автора не может быть пустым")
         @Size(min = 2, max = 16, message = "Имя автора должно быть от 2 до 16 символов")

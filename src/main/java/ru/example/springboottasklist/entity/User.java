@@ -20,22 +20,17 @@ import java.util.List;
 @Table(name = "users")
 public class User extends BaseEntity {
 
-
     @Column(name = "login", nullable = false, unique = true)
     private String login;
-
 
     @Column(name = "password", nullable = false)
     private String password;
 
-
     @Column
     private String lastName;
 
-
     @Column
     private String firstName;
-
 
     @Column
     private String phone;
@@ -47,10 +42,6 @@ public class User extends BaseEntity {
     @CreationTimestamp
     @Column(name = "dateOfCreated", nullable = false, updatable = false)
     private LocalDateTime dateOfCreated;
-
-//    @CreatedDate
-//    @Column
-//    private LocalDateTime dateOfCreated = LocalDateTime.now();
 
     @OneToMany(mappedBy = "user")
     private List<Task> tasks;

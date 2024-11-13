@@ -7,6 +7,14 @@ import ru.example.springboottasklist.enums.Status;
 
 import java.time.LocalDateTime;
 
+/**
+ * @param id          id задачи
+ * @param taskTitle   Название задачи
+ * @param title       Приоритет задачи
+ * @param status      Статус выполнения задачи
+ * @param categoryId  id категории
+ * @param createdTask Время создания задачи
+ */
 public record FilterPageTaskResponseDto(
         Long id,
         String taskTitle,

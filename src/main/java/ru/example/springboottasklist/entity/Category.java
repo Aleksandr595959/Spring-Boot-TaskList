@@ -1,6 +1,9 @@
 package ru.example.springboottasklist.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
@@ -16,12 +19,6 @@ public class Category extends BaseEntity {
 
     @Column(unique = true)
     private String categoryTitle;
-
-//    @Column
-//    private Long completedCount;
-//
-//    @Column
-//    private Long uncompletedCount;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Task> tasks;
