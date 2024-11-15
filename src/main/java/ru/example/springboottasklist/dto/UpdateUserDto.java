@@ -1,5 +1,7 @@
 package ru.example.springboottasklist.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -10,15 +12,17 @@ import javax.validation.constraints.Size;
  * @param phone     Номер контактного телефона
  */
 public record UpdateUserDto(
-        @NotBlank(message = "Имя автора не может быть пустым")
-        @Size(min = 2, max = 16, message = "Имя автора должно быть от 2 до 16 символов")
+        @NotBlank
+        @Size(min = 2, max = 16)
+        @Schema(description = "Имя пользователя", example = "Bob", minLength = 2, maxLength = 16)
         String firstName,
-        @NotBlank(message = "Фамилия автора не может быть пустым")
-        @Size(min = 2, max = 16, message = "Фамилия автора должно быть от 2 до 16 символов")
+        @NotBlank
+        @Size(min = 2, max = 16)
+        @Schema(description = "Фамилия пользователя", example = "Jonson", minLength = 2, maxLength = 16)
         String lastName,
-        @NotBlank(message = "Введите номер Вашего контактного телефона")
-        @Pattern(regexp = "\\+7\\s?\\(?\\d{3}\\)?\\s?\\d{3}-?\\d{2}-?\\d{2}",
-                message = "Введите номер в формате +7 (000) 000-00-00")
+        @NotBlank
+        @Pattern(regexp = "\\+7\\s?\\(?\\d{3}\\)?\\s?\\d{3}-?\\d{2}-?\\d{2}")
+        @Schema(description = "Номер телефона пользователя", example = "+7 (000) 000-00-00")
         String phone
 ) {
 }

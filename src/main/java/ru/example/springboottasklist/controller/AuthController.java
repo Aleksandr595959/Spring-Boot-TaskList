@@ -1,7 +1,10 @@
 package ru.example.springboottasklist.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,11 +39,11 @@ public class AuthController {
      * @return Ответ сервера со статусом 201 Created в случае успешной регистрации,
      * или ответ с кодом 400 Bad Request в случае некорректных данных.
      */
+    @PostMapping("/register")
     @Tag(name = "Регистрация")
     @Operation(summary = "Регистрация пользователя")
     @ApiResponse(responseCode = "201", description = "Created")
     @ApiResponse(responseCode = "400", description = "Bad Request")
-    @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody @Valid RegisterDto registerDto) {
         if (authService.register(registerDto)) {
             return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -56,11 +59,11 @@ public class AuthController {
      * @return Ответ сервера со статусом 200 OK в случае успешной авторизации,
      * или ответ с кодом 401 Unauthorized в случае неудачной авторизации.
      */
+    @PostMapping("/login")
     @Tag(name = "Авторизация")
     @Operation(summary = "Авторизация пользователя")
     @ApiResponse(responseCode = "200", description = "OK")
     @ApiResponse(responseCode = "401", description = "Unauthorized")
-    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid LoginDto loginDto) {
         if (authService.login(loginDto.username(), loginDto.password())) {
             return ResponseEntity.ok().build();

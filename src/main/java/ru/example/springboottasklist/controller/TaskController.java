@@ -49,8 +49,9 @@ public class TaskController {
      * @return {@link ResponseEntity} с объектом {@link TasksDto}
      */
     @GetMapping("/getAllTaskUser")
-    @Operation(summary = "Получение всех задач пользователя")
+    @Operation(summary = "Получение всех задач авторизованного пользователя")
     @ApiResponse(responseCode = "200", description = "OK")
+    @ApiResponse(responseCode = "401", description = "Unauthorized")
     public ResponseEntity<TasksDto> getAllTaskUser() {
         TasksDto tasksDto = taskService.getAllTasksByUser();
         return ResponseEntity.ok(tasksDto);
@@ -87,6 +88,7 @@ public class TaskController {
     @ApiResponse(responseCode = "200", description = "OK")
     @ApiResponse(responseCode = "401", description = "Unauthorized")
     @ApiResponse(responseCode = "403", description = "Forbidden")
+    @ApiResponse(responseCode = "404", description = "Not found")
     public ResponseEntity<TaskDto> updateTask(@PathVariable("id") Long id,
                                               @Valid @RequestBody CreateOrUpdateTaskDto createOrUpdateTaskDto) {
         return ResponseEntity.ok(taskService.updateTask(id, createOrUpdateTaskDto));
@@ -95,18 +97,16 @@ public class TaskController {
     /**
      * Фильтрация и пагинация задач.
      *
-     * @param pageNumber               с какого элемента
-     * @param pageSize                 по какой элемент
+     * @param pageNumber               начальный элемент
+     * @param pageSize                 количество элементов
      * @param filterPageTaskRequestDto объект с данными для фильтрации
      * @return {@link ResponseEntity} с объектом {@link FilterPageTaskResponseDto}
      */
+    @GetMapping("getTaskUser")
     @Operation(summary = "Фильтрация задач",
             description = "Фильтрация и пагинация задач пользователя")
-    @ApiResponse(responseCode = "204", description = "No Content")
+    @ApiResponse(responseCode = "200", description = "OK")
     @ApiResponse(responseCode = "401", description = "Unauthorized")
-    @ApiResponse(responseCode = "403", description = "Forbidden")
-    @ApiResponse(responseCode = "404", description = "Not Found")
-    @GetMapping("getTaskUser")
     public ResponseEntity<List<FilterPageTaskResponseDto>> getTaskUser(@RequestParam("page") Integer pageNumber,
                                                                        @RequestParam("size") Integer pageSize,
                                                                        @Valid @ModelAttribute FilterPageTaskRequestDto filterPageTaskRequestDto,

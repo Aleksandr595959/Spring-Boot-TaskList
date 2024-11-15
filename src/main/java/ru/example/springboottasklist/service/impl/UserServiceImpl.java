@@ -2,6 +2,8 @@ package ru.example.springboottasklist.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +15,9 @@ import ru.example.springboottasklist.repository.UserRepository;
 import ru.example.springboottasklist.service.UserService;
 import ru.example.springboottasklist.utils.AuthUtils;
 
+/**
+ * Реализация сервиса пользователей.
+ */
 @Slf4j
 @Service
 @Transactional
@@ -24,6 +29,13 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final AuthUtils authUtils;
 
+    /**
+     * Устанавливает новый пароль для текущего пользователя.
+     *
+     * @param currentPassword текущий пароль
+     * @param newPassword     новый пароль
+     * @throws BadCredentialsException если текущий пароль неверен
+     */
     @Override
     public void setPassword(final String currentPassword, final String newPassword) {
         log.info("Was invoked method : setPassword");
@@ -35,6 +47,12 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * Возвращает данные авторизованного пользователя.
+     *
+     * @return данные авторизованного пользователя
+     * @throws UsernameNotFoundException если пользователь не найден
+     */
     @Override
     public UserDto getAuthorizedUser() {
         log.info("Was invoked method for : getAuthorizedUser");
@@ -42,6 +60,13 @@ public class UserServiceImpl implements UserService {
         return userMapper.toDto(authUtils.getUserFromAuthentication());
     }
 
+    /**
+     * Обновляет данные пользователя.
+     *
+     * @param updateUser данные для обновления пользователя
+     * @return обновленные данные пользователя
+     * @throws UsernameNotFoundException если пользователь не найден
+     */
     @Override
     public UpdateUserDto updateUser(final UpdateUserDto updateUser) {
         log.info("Was invoked method for : updateUser");

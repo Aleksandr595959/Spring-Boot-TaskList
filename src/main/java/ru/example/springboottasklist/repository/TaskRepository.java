@@ -17,8 +17,5 @@ import java.util.List;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> , JpaSpecificationExecutor<Task> {
-    boolean existsById(Long id);
-
-
 
 }

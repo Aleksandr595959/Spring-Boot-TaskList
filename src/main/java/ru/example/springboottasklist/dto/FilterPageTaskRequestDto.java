@@ -1,5 +1,6 @@
 package ru.example.springboottasklist.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.format.annotation.DateTimeFormat;
 import ru.example.springboottasklist.enums.PriorityTitle;
 import ru.example.springboottasklist.enums.Status;
@@ -17,14 +18,19 @@ import java.time.LocalDateTime;
  * @param timeTo        Конечное время поиска
  */
 public record FilterPageTaskRequestDto(
+        @Schema(description = "Название задачи")
         String taskTitle,
+        @Schema(description = "Приоритет задачи")
         PriorityTitle title,
-        @Enumerated(EnumType.STRING)
+        @Schema(description = "Статус выполнения задачи")
         Status status,
+        @Schema(description = "Название категории задачи")
         String categoryTitle,
         @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+        @Schema(description = "Начальное время поиска")
         LocalDateTime timeFrom,
         @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+        @Schema(description = "Конечное время поиска")
         LocalDateTime timeTo
 ) {
 }

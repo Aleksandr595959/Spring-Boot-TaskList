@@ -33,6 +33,12 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final AuthUtils authUtils;
 
+    /**
+     * Добавляет новую категорию.
+     *
+     * @param categoryDto объект с данными для создания или обновления категории
+     * @return созданная категория в виде объекта CategoryDto
+     */
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @Override
     public CategoryDto addCategory(CreateOrUpdateCategoryDto categoryDto) {
@@ -43,6 +49,14 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryMapper.toDto(category);
     }
 
+    /**
+     * Обновляет категорию по его идентификатору.
+     *
+     * @param id          идентификатор категории
+     * @param categoryDto объект с данными для создания или обновления категории
+     * @return обновленная категория в виде объекта CategoryDto
+     * @throws CategoryNotFoundException если категория не найдена
+     */
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @Override
     public CategoryDto updateCategory(CreateOrUpdateCategoryDto categoryDto, Long id) {
@@ -68,6 +82,11 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.delete(category);
     }
 
+    /**
+     * Возвращает все категории, принадлежащие авторизованному пользователю.
+     *
+     * @return объект CategoriesDto со списком объявлений авторизованного пользователя
+     */
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @Override
     public CategoriesDto getAllCategories() {
@@ -83,10 +102,15 @@ public class CategoryServiceImpl implements CategoryService {
         return new CategoriesDto(categoriesList);
     }
 
+    /**
+     * Возвращает расширенную информацию по категории по её идентификатору.
+     *
+     * @param id   идентификатор объявления
+     */
     @Override
     public Category getCategoryById(final Long id) {
         log.info("Was invoked method for : getCategoryById");
-        
+
         return categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException("Отсутствует категория по данному id: " + id));
     }
 }

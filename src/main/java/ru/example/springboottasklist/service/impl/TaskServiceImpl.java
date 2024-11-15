@@ -41,7 +41,7 @@ public class TaskServiceImpl implements TaskService {
     /**
      * Добавляет новую задачу.
      *
-     * @param createOrUpdateTaskDto объект с данными для создания или обновления pflfxb
+     * @param createOrUpdateTaskDto объект с данными для создания или обновления
      * @return созданное объявление в виде объекта TaskDto
      */
     @Override

@@ -13,6 +13,9 @@ import ru.example.springboottasklist.repository.UserRepository;
 
 import java.util.Collections;
 
+/**
+ * Реализация интерфейса UserDetailsService для получения информации о пользователе.
+ */
 @Slf4j
 @Service
 @Transactional
@@ -21,6 +24,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
 
+    /**
+     * Загружает информацию о пользователе по его имени пользователя.
+     *
+     * @param username имя пользователя
+     * @return информация о пользователе
+     * @throws UsernameNotFoundException если пользователь не найден
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.info("Was invoked method for : loadUserByUsername");

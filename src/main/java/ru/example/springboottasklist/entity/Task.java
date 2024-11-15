@@ -8,7 +8,9 @@ import ru.example.springboottasklist.enums.Status;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-
+/**
+ * Класс, представляющий задачу.
+ */
 @Entity
 @Getter
 @Setter
@@ -18,29 +20,43 @@ import java.time.LocalDateTime;
 @Table(name = "tasks")
 public class Task extends BaseEntity {
 
+    /**
+     * Название задачи.
+     */
     @Column
     private String taskTitle;
 
-    @Column
-    private Integer completed;
-
+    /**
+     * Время создания объявления.
+     */
     @CreationTimestamp
     @Column(name = "created_task", nullable = false, updatable = false)
     private LocalDateTime createdTask;
 
+    /**
+     * Приоритет задачи.
+     */
     @Column
     @Enumerated(EnumType.STRING)
     private PriorityTitle title;
 
+    /**
+     * Статус выполнения задачи.
+     */
     @Column
     @Enumerated(EnumType.STRING)
     private Status status;
 
-
+    /**
+     * Категория задачи.
+     */
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
+    /**
+     * Пользователь, создавший задачу.
+     */
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

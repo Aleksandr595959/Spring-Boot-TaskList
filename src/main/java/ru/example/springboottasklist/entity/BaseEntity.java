@@ -4,6 +4,9 @@ import lombok.*;
 
 import javax.persistence.*;
 
+/**
+ * Базовый класс для сущностей.
+ */
 @Getter
 @Setter
 @MappedSuperclass
@@ -12,6 +15,9 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class BaseEntity {
 
+    /**
+     * Идентификатор сущности.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

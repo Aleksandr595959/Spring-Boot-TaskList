@@ -1,5 +1,6 @@
 package ru.example.springboottasklist.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import ru.example.springboottasklist.enums.Role;
 
 import javax.validation.constraints.Email;
@@ -16,21 +17,27 @@ import javax.validation.constraints.Size;
  * @param role      Роль пользователя
  */
 public record UserDto(
+        @Schema(description = "id пользователя")
         Long id,
-        @NotBlank(message = "Поле логин не может быть пустым")
-        @Size(min = 4, max = 32, message = "Логин должен содержать от 4 до 32 символов")
+        @NotBlank
+        @Size(min = 4, max = 32)
         @Email
+        @Schema(description = "Логин пользователя" , example = "john.doe@example.com", minLength = 4, maxLength = 32)
         String username,
-        @NotBlank(message = "Имя автора не может быть пустым")
-        @Size(min = 2, max = 16, message = "Имя автора должно быть от 2 до 16 символов")
+        @NotBlank
+        @Size(min = 2, max = 16)
+        @Schema(description = "Имя пользователя", example = "Bob", minLength = 2, maxLength = 16)
         String firstName,
-        @NotBlank(message = "Фамилия автора не может быть пустым")
-        @Size(min = 2, max = 16, message = "Фамилия автора должно быть от 2 до 16 символов")
+        @NotBlank
+        @Size(min = 2, max = 16)
+        @Schema(description = "Фамилия пользователя", example = "Jonson", minLength = 2, maxLength = 16)
         String lastName,
-        @NotBlank(message = "Введите номер Вашего контактного телефона")
-        @Pattern(regexp = "\\+7\\s?\\(?\\d{3}\\)?\\s?\\d{3}-?\\d{2}-?\\d{2}",
-                message = "Введите номер в формате +7 (000) 000-00-00")
+        @NotBlank
+        @Pattern(regexp = "\\+7\\s?\\(?\\d{3}\\)?\\s?\\d{3}-?\\d{2}-?\\d{2}")
+        @Schema(description = "Номер телефона пользователя", example = "+7 (000) 000-00-00")
         String phone,
+        @NotBlank
+        @Schema(description = "Роль пользователя")
         Role role
 ) {
 }

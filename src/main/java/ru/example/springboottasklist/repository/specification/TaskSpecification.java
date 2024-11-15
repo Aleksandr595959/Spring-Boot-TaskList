@@ -13,10 +13,26 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Спецификация для фильтрации и поиска задач, основанная на параметрах,
+ * предоставленных в {@link FilterPageTaskRequestDto}.
+ * Данный класс реализует интерфейс {@link Specification},
+ * который позволяет создавать динамические запросы к базе данных с использованием Java Persistence API (JPA).
+ */
 @RequiredArgsConstructor
 public class TaskSpecification implements Specification<Task> {
+
     private final FilterPageTaskRequestDto filterPageTaskRequestDto;
     private final Long userId;
+
+    /**
+     * Создает предикаты для фильтрации задач на основе предоставленных параметров.
+     *
+     * @param root            корень запроса, представляющий сущность {@link Task}
+     * @param query           объект {@link CriteriaQuery}, представляющий сам запрос
+     * @param criteriaBuilder объект {@link CriteriaBuilder}, используемый для создания предикатов
+     * @return объединенный предикат для фильтрации задач на основе заданных условий
+     */
     @Override
     public Predicate toPredicate(@NonNull Root<Task> root,
                                  @NonNull CriteriaQuery<?> query,
@@ -47,11 +63,6 @@ public class TaskSpecification implements Specification<Task> {
             predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("createdTask"),
                     filterPageTaskRequestDto.timeTo()));
         }
-        // Фильтрация по пользователю
-//        if (filterPageTaskRequestDto.userId() != null) {
-//            predicates.add(criteriaBuilder.equal(root.get("user").get("id"), filterPageTaskRequestDto.userId()));
-//        }
-        // Фильтрация по userId, если он не null (не администратор)
         if (userId != null) {
             predicates.add(criteriaBuilder.equal(root.get("user").get("id"), userId));
         }

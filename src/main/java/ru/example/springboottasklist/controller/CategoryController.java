@@ -37,9 +37,8 @@ public class CategoryController {
     @PostMapping("/create")
     @Operation(summary = "Создание категории",
             description = "Создание категории")
-    @ApiResponse(responseCode = "200", description = "OK")
+    @ApiResponse(responseCode = "201", description = "Created")
     @ApiResponse(responseCode = "401", description = "Unauthorized")
-    @ApiResponse(responseCode = "403", description = "Forbidden")
     public ResponseEntity<CategoryDto> createCategory(@Valid @RequestBody CreateOrUpdateCategoryDto createOrUpdateCategoryDto) {
         return ResponseEntity.ok(categoryService.addCategory(createOrUpdateCategoryDto));
     }
@@ -52,6 +51,12 @@ public class CategoryController {
      * @return {@link ResponseEntity} с объектом {@link CategoryDto}
      */
     @PatchMapping("{id}")
+    @Operation(summary = "Обновление категории",
+            description = "Обновление категории по id")
+    @ApiResponse(responseCode = "200", description = "OK")
+    @ApiResponse(responseCode = "401", description = "Unauthorized")
+    @ApiResponse(responseCode = "403", description = "Forbidden")
+    @ApiResponse(responseCode = "404", description = "Not found")
     public ResponseEntity<CategoryDto> updateCategory(@PathVariable("id") Long id,
                                                       @Valid @RequestBody CreateOrUpdateCategoryDto createOrUpdateCategoryDto) {
         return ResponseEntity.ok(categoryService.updateCategory(createOrUpdateCategoryDto, id));
@@ -64,6 +69,12 @@ public class CategoryController {
      * @return {@link ResponseEntity} без тела (No Content)
      */
     @DeleteMapping("{id}")
+    @Operation(summary = "Удаление категории",
+            description = "Удаление категории по id")
+    @ApiResponse(responseCode = "204", description = "No Content")
+    @ApiResponse(responseCode = "401", description = "Unauthorized")
+    @ApiResponse(responseCode = "403", description = "Forbidden")
+    @ApiResponse(responseCode = "404", description = "Not Found")
     public ResponseEntity<Valid> deleteCategory(@PathVariable("id") Long id) {
         categoryService.removeCategory(id);
         return ResponseEntity.noContent().build();
@@ -75,6 +86,9 @@ public class CategoryController {
      * @return {@link ResponseEntity} с объектом {@link CategoriesDto}
      */
     @GetMapping()
+    @Operation(summary = "Получение всех категорий авторизованного пользователя")
+    @ApiResponse(responseCode = "200", description = "OK")
+    @ApiResponse(responseCode = "401", description = "Unauthorized")
     public ResponseEntity<CategoriesDto> getAllCategories() {
         CategoriesDto categoriesDto = categoryService.getAllCategories();
         return ResponseEntity.ok(categoriesDto);

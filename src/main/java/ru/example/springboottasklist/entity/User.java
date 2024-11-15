@@ -11,7 +11,9 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
+/**
+ * Класс, представляющий пользователя.
+ */
 @Entity
 @Getter
 @Setter
@@ -20,32 +22,59 @@ import java.util.List;
 @Table(name = "users")
 public class User extends BaseEntity {
 
+    /**
+     * Логин пользователя.
+     */
     @Column(name = "login", nullable = false, unique = true)
     private String login;
 
+    /**
+     * Пароль пользователя.
+     */
     @Column(name = "password", nullable = false)
     private String password;
 
+    /**
+     * Имя пользователя.
+     */
     @Column
     private String lastName;
 
+    /**
+     * Фамилия пользователя.
+     */
     @Column
     private String firstName;
 
+    /**
+     * Телефон пользователя.
+     */
     @Column
     private String phone;
 
+    /**
+     * Роль пользователя.
+     */
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
 
+    /**
+     * Время создания учетной записи пользователя.
+     */
     @CreationTimestamp
     @Column(name = "dateOfCreated", nullable = false, updatable = false)
     private LocalDateTime dateOfCreated;
 
+    /**
+     * Задачи пользователя.
+     */
     @OneToMany(mappedBy = "user")
     private List<Task> tasks;
 
+    /**
+     * Категории пользователя.
+     */
     @OneToMany(mappedBy = "user")
     private List<Category> categories;
 }

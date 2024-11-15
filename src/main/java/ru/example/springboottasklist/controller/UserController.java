@@ -33,11 +33,11 @@ public class UserController {
      * @param newPasswordDto DTO-объект с текущим и новым паролем.
      * @return Ответ со статусом HTTP 204 (No Content).
      */
+    @PostMapping("/set_password")
     @Operation(summary = "Обновление пароля")
     @ApiResponse(responseCode = "200", description = "OK")
     @ApiResponse(responseCode = "401", description = "Unauthorized")
     @ApiResponse(responseCode = "403", description = "Forbidden")
-    @PostMapping("/set_password")
     public ResponseEntity<Void> setPassword(@RequestBody @Valid NewPasswordDto newPasswordDto) {
         userService.setPassword(newPasswordDto.currentPassword(), newPasswordDto.newPassword());
         return ResponseEntity.noContent().build();
@@ -48,10 +48,10 @@ public class UserController {
      *
      * @return Ответ со статусом HTTP 200 и DTO-объектом пользователя в теле ответа.
      */
+    @GetMapping("/me")
     @Operation(summary = "Получение информации об авторизованном пользователе")
     @ApiResponse(responseCode = "200", description = "OK")
     @ApiResponse(responseCode = "401", description = "Unauthorized")
-    @GetMapping("/me")
     public ResponseEntity<UserDto> getUser() {
         return ResponseEntity.ok(userService.getAuthorizedUser());
     }
