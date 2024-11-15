@@ -1,0 +1,744 @@
+openapi: 3.0.1
+info:
+  title: My API
+  version: v1
+servers:
+- url: http://localhost:8081
+  description: Generated server url
+paths:
+  /users/set_password:
+    post:
+      tags:
+      - Пользователи
+      summary: Обновление пароля
+      operationId: setPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewPasswordDto'
+        required: true
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Forbidden
+        "401":
+          description: Unauthorized
+  /task/createTask:
+    post:
+      tags:
+      - Задачи
+      summary: Создание задачи
+      operationId: createTask
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrUpdateTaskDto'
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TaskDto'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TaskDto'
+  /register:
+    post:
+      tags:
+      - Регистрация
+      summary: Регистрация пользователя
+      operationId: register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterDto'
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "201":
+          description: Created
+          content:
+            '*/*':
+              schema:
+                type: object
+  /login:
+    post:
+      tags:
+      - Авторизация
+      summary: Авторизация пользователя
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginDto'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                type: object
+  /category/create:
+    post:
+      tags:
+      - Категория
+      summary: Создание категории
+      description: Создание категории
+      operationId: createCategory
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrUpdateCategoryDto'
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CategoryDto'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CategoryDto'
+  /users/me:
+    get:
+      tags:
+      - Пользователи
+      summary: Получение информации об авторизованном пользователе
+      operationId: getUser
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserDto'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserDto'
+    patch:
+      tags:
+      - Пользователи
+      summary: Обновление информации об авторизованном пользователе
+      operationId: updateUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserDto'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UpdateUserDto'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UpdateUserDto'
+  /task/{id}:
+    delete:
+      tags:
+      - Задачи
+      summary: Удаление задачи
+      description: Удаление задачи по идентификационному номеру авторизованным пользователем
+      operationId: removeTask
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: No Content
+          content:
+            '*/*':
+              schema:
+                type: object
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                type: object
+    patch:
+      tags:
+      - Задачи
+      summary: Обновление задачи
+      description: Обновление задачи по id задачи
+      operationId: updateTask
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrUpdateTaskDto'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TaskDto'
+        "404":
+          description: Not found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TaskDto'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TaskDto'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TaskDto'
+  /category/{id}:
+    delete:
+      tags:
+      - Категория
+      summary: Удаление категории
+      description: Удаление категории по id
+      operationId: deleteCategory
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: No Content
+          content:
+            '*/*':
+              schema:
+                type: object
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                type: object
+    patch:
+      tags:
+      - Категория
+      summary: Обновление категории
+      description: Обновление категории по id
+      operationId: updateCategory
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrUpdateCategoryDto'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CategoryDto'
+        "404":
+          description: Not found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CategoryDto'
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CategoryDto'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CategoryDto'
+  /task/getTaskUser:
+    get:
+      tags:
+      - Задачи
+      summary: Фильтрация задач
+      description: Фильтрация и пагинация задач пользователя
+      operationId: getTaskUser
+      parameters:
+      - name: page
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: size
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: filterPageTaskRequestDto
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/FilterPageTaskRequestDto'
+      - name: sort
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Sort'
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FilterPageTaskResponseDto'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FilterPageTaskResponseDto'
+  /task/getAllTaskUser:
+    get:
+      tags:
+      - Задачи
+      summary: Получение всех задач авторизованного пользователя
+      operationId: getAllTaskUser
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TasksDto'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TasksDto'
+  /category:
+    get:
+      tags:
+      - Категория
+      summary: Получение всех категорий авторизованного пользователя
+      operationId: getAllCategories
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CategoriesDto'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CategoriesDto'
+components:
+  schemas:
+    NewPasswordDto:
+      required:
+      - currentPassword
+      - newPassword
+      type: object
+      properties:
+        currentPassword:
+          maxLength: 16
+          minLength: 8
+          type: string
+          description: Текущий пароль пользователя
+          example: CurrentPassword
+        newPassword:
+          maxLength: 16
+          minLength: 8
+          type: string
+          description: Новый пароль пользователя
+          example: NewPassword
+    CreateOrUpdateTaskDto:
+      required:
+      - status
+      - taskTitle
+      type: object
+      properties:
+        taskTitle:
+          maxLength: 32
+          minLength: 4
+          type: string
+          description: Название задачи
+        title:
+          type: string
+          description: Приоритет задачи
+          enum:
+          - HIGH
+          - MEDIUM
+          - LOW
+        categoryId:
+          type: integer
+          description: id категории задачи
+          format: int64
+        status:
+          type: string
+          description: Статус выполнения задачи
+          enum:
+          - OPEN
+          - IN_PROGRESS
+          - DONE
+    TaskDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: id задачи
+          format: int64
+        taskTitle:
+          maxLength: 32
+          minLength: 4
+          type: string
+          description: Название задачи
+        title:
+          type: string
+          description: Приоритет задачи
+          enum:
+          - HIGH
+          - MEDIUM
+          - LOW
+        categoryId:
+          type: integer
+          description: id категории
+          format: int64
+        status:
+          type: string
+          description: Статус выполнения задачи
+          enum:
+          - OPEN
+          - IN_PROGRESS
+          - DONE
+    RegisterDto:
+      required:
+      - firstName
+      - lastName
+      - password
+      - phone
+      - role
+      - username
+      type: object
+      properties:
+        username:
+          maxLength: 32
+          minLength: 4
+          type: string
+          description: Логин пользователя
+          example: john.doe@example.com
+        password:
+          maxLength: 16
+          minLength: 8
+          type: string
+          description: Пароль пользователя
+          example: password123
+        firstName:
+          maxLength: 16
+          minLength: 2
+          type: string
+          description: Имя пользователя
+          example: Bob
+        lastName:
+          maxLength: 16
+          minLength: 2
+          type: string
+          description: Фамилия пользователя
+          example: Jonson
+        phone:
+          pattern: "\\+7\\s?\\(?\\d{3}\\)?\\s?\\d{3}-?\\d{2}-?\\d{2}"
+          type: string
+          description: Номер телефона пользователя
+          example: +7 (000) 000-00-00
+        role:
+          type: string
+          description: Роль пользователя
+          enum:
+          - USER
+          - ADMIN
+    LoginDto:
+      required:
+      - password
+      - username
+      type: object
+      properties:
+        username:
+          maxLength: 32
+          minLength: 4
+          type: string
+          description: Логин пользователя
+          example: john.doe@example.com
+        password:
+          maxLength: 16
+          minLength: 8
+          type: string
+          description: Пароль пользователя
+          example: password123
+    CreateOrUpdateCategoryDto:
+      required:
+      - categoryTitle
+      type: object
+      properties:
+        categoryTitle:
+          maxLength: 32
+          minLength: 4
+          type: string
+          description: Название категории
+    CategoryDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: id категории
+          format: int64
+        categoryTitle:
+          maxLength: 32
+          minLength: 4
+          type: string
+          description: Название категории
+    UpdateUserDto:
+      required:
+      - firstName
+      - lastName
+      - phone
+      type: object
+      properties:
+        firstName:
+          maxLength: 16
+          minLength: 2
+          type: string
+          description: Имя пользователя
+          example: Bob
+        lastName:
+          maxLength: 16
+          minLength: 2
+          type: string
+          description: Фамилия пользователя
+          example: Jonson
+        phone:
+          pattern: "\\+7\\s?\\(?\\d{3}\\)?\\s?\\d{3}-?\\d{2}-?\\d{2}"
+          type: string
+          description: Номер телефона пользователя
+          example: +7 (000) 000-00-00
+    UserDto:
+      required:
+      - firstName
+      - lastName
+      - phone
+      - role
+      - username
+      type: object
+      properties:
+        id:
+          type: integer
+          description: id пользователя
+          format: int64
+        username:
+          maxLength: 32
+          minLength: 4
+          type: string
+          description: Логин пользователя
+          example: john.doe@example.com
+        firstName:
+          maxLength: 16
+          minLength: 2
+          type: string
+          description: Имя пользователя
+          example: Bob
+        lastName:
+          maxLength: 16
+          minLength: 2
+          type: string
+          description: Фамилия пользователя
+          example: Jonson
+        phone:
+          pattern: "\\+7\\s?\\(?\\d{3}\\)?\\s?\\d{3}-?\\d{2}-?\\d{2}"
+          type: string
+          description: Номер телефона пользователя
+          example: +7 (000) 000-00-00
+        role:
+          type: string
+          description: Роль пользователя
+          enum:
+          - USER
+          - ADMIN
+    FilterPageTaskRequestDto:
+      type: object
+      properties:
+        taskTitle:
+          type: string
+          description: Название задачи
+        title:
+          type: string
+          description: Приоритет задачи
+          enum:
+          - HIGH
+          - MEDIUM
+          - LOW
+        status:
+          type: string
+          description: Статус выполнения задачи
+          enum:
+          - OPEN
+          - IN_PROGRESS
+          - DONE
+        categoryTitle:
+          type: string
+          description: Название категории задачи
+        timeFrom:
+          type: string
+          description: Начальное время поиска
+          format: date-time
+        timeTo:
+          type: string
+          description: Конечное время поиска
+          format: date-time
+    Sort:
+      type: object
+      properties:
+        sort:
+          type: array
+          items:
+            type: string
+    FilterPageTaskResponseDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: id задачи
+          format: int64
+        taskTitle:
+          type: string
+          description: Название задачи
+        title:
+          type: string
+          description: Приоритет задачи
+          enum:
+          - HIGH
+          - MEDIUM
+          - LOW
+        categoryId:
+          type: integer
+          description: id категории задачи
+          format: int64
+        status:
+          type: string
+          description: Статус выполнения задачи
+          enum:
+          - OPEN
+          - IN_PROGRESS
+          - DONE
+        createdTask:
+          type: string
+          description: Время создания задачи
+          format: date-time
+    TasksDto:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: количество задач
+          format: int32
+        tasks:
+          type: array
+          description: Список задач
+          items:
+            $ref: '#/components/schemas/TaskDto'
+    CategoriesDto:
+      required:
+      - categories
+      type: object
+      properties:
+        categories:
+          type: array
+          description: Список категорий пользователя
+          items:
+            $ref: '#/components/schemas/CategoryDto'
