@@ -9,6 +9,7 @@ import ru.example.springboottasklist.dto.RegisterDto;
 import ru.example.springboottasklist.dto.UpdateUserDto;
 import ru.example.springboottasklist.dto.UserDto;
 import ru.example.springboottasklist.entity.User;
+import ru.example.springboottasklist.enums.Role;
 
 @Mapper
 public abstract class UserMapper {
@@ -24,6 +25,7 @@ public abstract class UserMapper {
      */
     @Mapping(target = "login", source = "username")
     @Mapping(target = "password", expression = "java(encryptPassword(registerDto))")
+    @Mapping(target = "role", expression = "java(getDefaultRole())")
     public abstract User toEntity(RegisterDto registerDto);
 
     /**
@@ -59,6 +61,14 @@ public abstract class UserMapper {
      */
     protected String encryptPassword(RegisterDto registerDto) {
         return encoder.encode(registerDto.password());
+    }
+    /**
+     * Устанавливает роль по умолчанию.
+     *
+     * @return роль.
+     */
+    protected Role getDefaultRole() {
+        return Role.USER;
     }
 
 }

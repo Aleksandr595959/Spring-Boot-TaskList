@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -39,9 +40,19 @@ public class WebSecurityConfig extends GlobalMethodSecurityConfiguration {
             "/v3/api-docs",
             "/webjars/**",
             "/login",
-            "/register",
-            "/**"
+            "/register"
+
     };
+
+//    private static final AntPathRequestMatcher[] AUTH_WHITELIST = {
+//            new AntPathRequestMatcher("/swagger-resources/**"),
+//            new AntPathRequestMatcher("/swagger-ui/index.html"),
+//            new AntPathRequestMatcher("/swagger-ui.html"),
+//            new AntPathRequestMatcher("/v3/api-docs"),
+//            new AntPathRequestMatcher("/webjars/**"),
+//            new AntPathRequestMatcher("/login"),
+//            new AntPathRequestMatcher("/register")
+//    };
 
     /**
      * Фильтр цепочки безопасности.
@@ -51,26 +62,6 @@ public class WebSecurityConfig extends GlobalMethodSecurityConfiguration {
      * @return фильтр цепочки безопасности
      * @throws Exception если возникнет ошибка при настройке безопасности
      */
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        log.info("Was invoked method for : filterChain");
-//
-//        http.csrf()
-//                .disable()
-//                .authorizeHttpRequests(
-//                        authorization ->
-//                                authorization
-//                                        .mvcMatchers(AUTH_WHITELIST)
-//                                        .permitAll()
-//                                        .mvcMatchers(HttpMethod.GET, "**")
-//                                        .permitAll()
-//                                        .mvcMatchers("**", "**")
-//                                        .authenticated())
-//                .cors()
-//                .and()
-//                .httpBasic(withDefaults());
-//        return http.build();
-//    }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         log.info("Was invoked method for : filterChain");
@@ -80,16 +71,50 @@ public class WebSecurityConfig extends GlobalMethodSecurityConfiguration {
                 .authorizeHttpRequests(
                         authorization ->
                                 authorization
-                                        // Разрешить доступ ко всем URL для всех пользователей (даже неавторизованных)
-                                        .mvcMatchers("/**")
+                                        .mvcMatchers(AUTH_WHITELIST)
                                         .permitAll()
-                )
+                                        .mvcMatchers()
+                                        .authenticated())
                 .cors()
                 .and()
                 .httpBasic(withDefaults());
         return http.build();
     }
-
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        log.info("Was invoked method for : filterChain");
+//
+//        http.csrf()
+//                .disable()
+//                .authorizeHttpRequests(
+//                        authorization ->
+//                                authorization
+//                                        // Разрешить доступ ко всем URL для всех пользователей (даже неавторизованных)
+//                                        .mvcMatchers("/**")
+//                                        .permitAll()
+//                )
+//                .cors()
+//                .and()
+//                .httpBasic(withDefaults());
+//        return http.build();
+//    }
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        log.info("Was invoked method for : filterChain");
+//
+//        http.csrf()
+//                .disable()
+//                .authorizeHttpRequests(authorization ->
+//                        authorization
+//                                .requestMatchers(AUTH_WHITELIST).permitAll() // Разрешает доступ к Swagger
+//                                .anyRequest().authenticated() // Остальные запросы требуют аутентификации
+//                )
+//                .cors() // Включает конфигурацию CORS
+//                .and()
+//                .httpBasic(withDefaults()); // Включает Basic Authentication
+//
+//        return http.build();
+//        }
     /**
      * Кодировщик паролей.
      * Этот метод создает экземпляр BCryptPasswordEncoder для кодирования паролей.

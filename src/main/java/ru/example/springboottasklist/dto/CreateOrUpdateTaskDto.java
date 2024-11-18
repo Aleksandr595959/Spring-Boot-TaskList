@@ -5,6 +5,7 @@ import ru.example.springboottasklist.enums.PriorityTitle;
 import ru.example.springboottasklist.enums.Status;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
@@ -16,13 +17,13 @@ import javax.validation.constraints.Size;
 public record CreateOrUpdateTaskDto(
         @NotBlank
         @Size(min = 4, max = 32)
-        @Schema(description = "Название задачи",minLength = 4,maxLength = 32)
+        @Schema(description = "Название задачи", minLength = 4, maxLength = 32)
         String taskTitle,
         @Schema(description = "Приоритет задачи")
         PriorityTitle title,
         @Schema(description = "id категории задачи")
         Long categoryId,
-        @NotBlank
+        @NotNull
         @Schema(description = "Статус выполнения задачи")
         Status status
 

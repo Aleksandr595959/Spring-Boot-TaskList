@@ -14,7 +14,6 @@ import javax.validation.constraints.Size;
  * @param firstName Имя пользователя
  * @param lastName  Фамилия пользователя
  * @param phone     Номер контактного телефона
- * @param role      Роль пользователя
  */
 public record RegisterDto(
         @NotBlank
@@ -37,9 +36,6 @@ public record RegisterDto(
         @NotBlank
         @Pattern(regexp = "\\+7\\s?\\(?\\d{3}\\)?\\s?\\d{3}-?\\d{2}-?\\d{2}")
         @Schema(description = "Номер телефона пользователя", example = "+7 (000) 000-00-00")
-        String phone,
-        @NotBlank
-        @Schema(description = "Роль пользователя")
-        Role role
+        String phone
 ) {
 }
