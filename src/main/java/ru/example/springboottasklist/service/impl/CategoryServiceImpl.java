@@ -93,12 +93,14 @@ public class CategoryServiceImpl implements CategoryService {
         log.info("Was invoked method for : getAllCategories");
 
         User user = authUtils.getUserFromAuthentication();
-        List<CategoryDto> categoriesList = user.getTasks().stream()
-                .map(Task::getCategory)
-                .filter(Objects::nonNull)
-//                .distinct()
-                .map(categoryMapper::toCategoryDto)
-                .toList();
+      List<CategoryDto> categoriesList = user.getCategories().stream()
+//                .map(Task::getCategory)
+//                .filter(Objects::nonNull)
+////               .distinct()
+        .map(categoryMapper::toCategoryDto)
+       .toList();
+//        List<Category> categories = user.getCategories();
+//        List<CategoryDto> categoriesList = categoryMapper.toCategoryDto(categories);
         return new CategoriesDto(categoriesList);
     }
 
