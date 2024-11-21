@@ -14,8 +14,8 @@
     <groupId>ru.skypro</groupId>
     <artifactId>ads</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Ads application</name>
-    <description>Application for managing ads</description>
+    <name>SpringBootTaskList application</name>
+    <description>Application for managing tasks</description>
 
     <properties>
         <java.version>17</java.version>
@@ -45,10 +45,10 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.liquibase</groupId>-->
-<!--            <artifactId>liquibase-core</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>

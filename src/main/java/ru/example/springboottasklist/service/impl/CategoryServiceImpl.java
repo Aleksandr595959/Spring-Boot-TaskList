@@ -9,7 +9,6 @@ import ru.example.springboottasklist.dto.CategoriesDto;
 import ru.example.springboottasklist.dto.CategoryDto;
 import ru.example.springboottasklist.dto.CreateOrUpdateCategoryDto;
 import ru.example.springboottasklist.entity.Category;
-import ru.example.springboottasklist.entity.Task;
 import ru.example.springboottasklist.entity.User;
 import ru.example.springboottasklist.exeption.CategoryNotFoundException;
 import ru.example.springboottasklist.mapper.CategoryMapper;
@@ -18,7 +17,6 @@ import ru.example.springboottasklist.service.CategoryService;
 import ru.example.springboottasklist.utils.AuthUtils;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Сервис категорий.
@@ -93,12 +91,12 @@ public class CategoryServiceImpl implements CategoryService {
         log.info("Was invoked method for : getAllCategories");
 
         User user = authUtils.getUserFromAuthentication();
-      List<CategoryDto> categoriesList = user.getCategories().stream()
+        List<CategoryDto> categoriesList = user.getCategories().stream()
 //                .map(Task::getCategory)
 //                .filter(Objects::nonNull)
 ////               .distinct()
-        .map(categoryMapper::toCategoryDto)
-       .toList();
+                .map(categoryMapper::toCategoryDto)
+                .toList();
 //        List<Category> categories = user.getCategories();
 //        List<CategoryDto> categoriesList = categoryMapper.toCategoryDto(categories);
         return new CategoriesDto(categoriesList);
@@ -107,7 +105,7 @@ public class CategoryServiceImpl implements CategoryService {
     /**
      * Возвращает расширенную информацию по категории по её идентификатору.
      *
-     * @param id   идентификатор объявления
+     * @param id идентификатор объявления
      */
     @Override
     public Category getCategoryById(final Long id) {

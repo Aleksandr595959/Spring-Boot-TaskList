@@ -35,24 +35,14 @@ public class WebSecurityConfig extends GlobalMethodSecurityConfiguration {
      * Этот список содержит URL-адреса, на которые авторизация не требуется.
      */
     private static final String[] AUTH_WHITELIST = {
-            "/swagger-resources/**",
-            "/swagger-ui.html",
-            "/v3/api-docs",
-            "/webjars/**",
+//            "/swagger-resources/**",
+//            "/swagger-ui.html",
+//            "/v3/api-docs",
+//            "/webjars/**",
             "/login",
             "/register"
 
     };
-
-//    private static final AntPathRequestMatcher[] AUTH_WHITELIST = {
-//            new AntPathRequestMatcher("/swagger-resources/**"),
-//            new AntPathRequestMatcher("/swagger-ui/index.html"),
-//            new AntPathRequestMatcher("/swagger-ui.html"),
-//            new AntPathRequestMatcher("/v3/api-docs"),
-//            new AntPathRequestMatcher("/webjars/**"),
-//            new AntPathRequestMatcher("/login"),
-//            new AntPathRequestMatcher("/register")
-//    };
 
     /**
      * Фильтр цепочки безопасности.
@@ -73,48 +63,14 @@ public class WebSecurityConfig extends GlobalMethodSecurityConfiguration {
                                 authorization
                                         .mvcMatchers(AUTH_WHITELIST)
                                         .permitAll()
-                                        .mvcMatchers()
+                                        .mvcMatchers("/category/**","/task/**","/users/**")
                                         .authenticated())
                 .cors()
                 .and()
                 .httpBasic(withDefaults());
         return http.build();
     }
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        log.info("Was invoked method for : filterChain");
-//
-//        http.csrf()
-//                .disable()
-//                .authorizeHttpRequests(
-//                        authorization ->
-//                                authorization
-//                                        // Разрешить доступ ко всем URL для всех пользователей (даже неавторизованных)
-//                                        .mvcMatchers("/**")
-//                                        .permitAll()
-//                )
-//                .cors()
-//                .and()
-//                .httpBasic(withDefaults());
-//        return http.build();
-//    }
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        log.info("Was invoked method for : filterChain");
-//
-//        http.csrf()
-//                .disable()
-//                .authorizeHttpRequests(authorization ->
-//                        authorization
-//                                .requestMatchers(AUTH_WHITELIST).permitAll() // Разрешает доступ к Swagger
-//                                .anyRequest().authenticated() // Остальные запросы требуют аутентификации
-//                )
-//                .cors() // Включает конфигурацию CORS
-//                .and()
-//                .httpBasic(withDefaults()); // Включает Basic Authentication
-//
-//        return http.build();
-//        }
+
     /**
      * Кодировщик паролей.
      * Этот метод создает экземпляр BCryptPasswordEncoder для кодирования паролей.
