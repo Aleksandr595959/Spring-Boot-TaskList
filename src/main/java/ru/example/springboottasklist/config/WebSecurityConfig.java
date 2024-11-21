@@ -35,10 +35,10 @@ public class WebSecurityConfig extends GlobalMethodSecurityConfiguration {
      * Этот список содержит URL-адреса, на которые авторизация не требуется.
      */
     private static final String[] AUTH_WHITELIST = {
-//            "/swagger-resources/**",
-//            "/swagger-ui.html",
-//            "/v3/api-docs",
-//            "/webjars/**",
+            "/swagger-resources/**",
+            "/swagger-ui.html",
+            "/v3/api-docs",
+            "/webjars/**",
             "/login",
             "/register"
 
