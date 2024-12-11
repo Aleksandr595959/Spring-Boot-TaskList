@@ -62,8 +62,8 @@ public class User extends BaseEntity {
     /**
      * Время создания учетной записи пользователя.
      */
-    @CreationTimestamp
-    @Column(name = "dateOfCreated", nullable = false, updatable = false)
+
+    @Column(name = "date_of_created", updatable = false)
     private LocalDateTime dateOfCreated;
 
     /**

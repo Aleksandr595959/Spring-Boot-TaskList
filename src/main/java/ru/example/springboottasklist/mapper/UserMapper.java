@@ -26,6 +26,7 @@ public abstract class UserMapper {
     @Mapping(target = "login", source = "username")
     @Mapping(target = "password", expression = "java(encryptPassword(registerDto))")
     @Mapping(target = "role", expression = "java(getDefaultRole())")
+    @Mapping(target = "dateOfCreated", expression = "java(java.time.LocalDateTime.now())")
     public abstract User toEntity(RegisterDto registerDto);
 
     /**

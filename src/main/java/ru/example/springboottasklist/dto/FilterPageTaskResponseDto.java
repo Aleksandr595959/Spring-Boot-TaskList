@@ -27,9 +27,9 @@ public record FilterPageTaskResponseDto(
         Long categoryId,
         @Schema(description = "Статус выполнения задачи")
         Status status,
-        @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+        @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
         @Schema(description = "Время создания задачи")
-        LocalDateTime createdTask
+        String createdTask
 ) {
 }

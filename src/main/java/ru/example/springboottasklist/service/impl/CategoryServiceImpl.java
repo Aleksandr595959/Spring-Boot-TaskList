@@ -55,7 +55,7 @@ public class CategoryServiceImpl implements CategoryService {
      * @return обновленная категория в виде объекта CategoryDto
      * @throws CategoryNotFoundException если категория не найдена
      */
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN') or authentication.name == @categoryRepository.getById(#id).getUser().login")
     @Override
     public CategoryDto updateCategory(CreateOrUpdateCategoryDto categoryDto, Long id) {
         log.info("Was invoked method for : updateCategory");
@@ -107,6 +107,7 @@ public class CategoryServiceImpl implements CategoryService {
      *
      * @param id идентификатор объявления
      */
+    @PreAuthorize("hasRole('ADMIN') or authentication.name == @categoryRepository.getById(#id).getUser().login")
     @Override
     public Category getCategoryById(final Long id) {
         log.info("Was invoked method for : getCategoryById");

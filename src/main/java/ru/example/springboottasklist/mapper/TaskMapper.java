@@ -7,6 +7,7 @@ import ru.example.springboottasklist.dto.TaskDto;
 import ru.example.springboottasklist.entity.Task;
 import ru.example.springboottasklist.entity.User;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper(nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
@@ -31,8 +32,8 @@ public interface TaskMapper {
      */
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", source = "user")
+    @Mapping(target = "createdTask", expression = "java(java.time.LocalDateTime.now())")
     Task createTaskDtoToTask(CreateOrUpdateTaskDto taskDto, User user);
-
     /**
      * Преобразует список объектов `Task` в список объектов `TaskDto`.
      *

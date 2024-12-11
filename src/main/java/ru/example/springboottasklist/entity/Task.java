@@ -29,8 +29,8 @@ public class Task extends BaseEntity {
     /**
      * Время создания объявления.
      */
-    @CreationTimestamp
-    @Column(name = "created_task", nullable = false, updatable = false)
+//    @CreationTimestamp
+    @Column(name = "created_task", updatable = false)
     private LocalDateTime createdTask;
 
     /**

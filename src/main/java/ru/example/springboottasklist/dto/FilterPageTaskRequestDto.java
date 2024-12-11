@@ -5,8 +5,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import ru.example.springboottasklist.enums.PriorityTitle;
 import ru.example.springboottasklist.enums.Status;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import java.time.LocalDateTime;
 
 /**
@@ -26,10 +24,10 @@ public record FilterPageTaskRequestDto(
         Status status,
         @Schema(description = "Название категории задачи")
         String categoryTitle,
-        @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+        @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
         @Schema(description = "Начальное время поиска")
         LocalDateTime timeFrom,
-        @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+        @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
         @Schema(description = "Конечное время поиска")
         LocalDateTime timeTo
 ) {
