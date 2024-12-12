@@ -11,8 +11,8 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>ru.skypro</groupId>
-    <artifactId>ads</artifactId>
+    <groupId>ru.task</groupId>
+    <artifactId>spring-boot-task-list</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>SpringBootTaskList application</name>
     <description>Application for managing tasks</description>
