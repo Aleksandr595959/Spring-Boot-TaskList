@@ -1,4 +1,4 @@
-package ru.example.springboottasklist.cintroller;
+package ru.example.springboottasklist.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.minidev.json.JSONObject;
